@@ -19,6 +19,22 @@ public class DigitsToStringConverter {
     public static String convertDigitsToString(int[] digits, int base,
                                                char[] alphabet) {
         // TODO: Implement (Problem 3.b)
-        return "";
+        if (digits.length == 0){
+            return "";
+        }
+        else if (alphabet.length == base){
+            String mappedDigits = "";
+            // Traverse the digits array and add the corresponding alphabet element
+            // to the mappedDigits string. 
+            for (int i = 0; i  < digits.length; i++){
+                if (digits[i] >= base || digits[i] < 0)
+                    return null;
+                else{
+                    mappedDigits = mappedDigits + alphabet[digits[i]];
+                }
+            }
+            return mappedDigits;
+        }
+        else return null;
     }
 }
