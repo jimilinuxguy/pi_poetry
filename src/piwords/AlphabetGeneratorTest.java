@@ -9,6 +9,7 @@ public class AlphabetGeneratorTest {
     public void generateFrequencyAlphabetTest() {
         // Expect in the training data that Pr(a) = 2/5, Pr(b) = 2/5,
         // Pr(c) = 1/5.
+    	// Hello world.
         String[] trainingData = {"aa", "bbc"};
         // In the output for base 10, they should be in the same proportion.
         char[] expectedOutput = {'a', 'a', 'a', 'a',
