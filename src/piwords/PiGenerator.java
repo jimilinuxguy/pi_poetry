@@ -2,6 +2,7 @@ package piwords;
 
 public class PiGenerator {
     /**
+     * Tests
      * Returns precision hexadecimal digits of the fractional part of pi.
      * Returns digits in most significant to least significant order.
      * 
