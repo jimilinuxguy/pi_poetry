@@ -52,7 +52,66 @@ public class AlphabetGenerator {
      */
     public static char[] generateFrequencyAlphabet(int base,
                                                    String[] trainingData) {
-        // TODO: Implement (Problem 5.b)
-        return null;
+        // Error checking, yay!
+    	if(base < 0){return null;}
+
+    	// letterCount: Counts the occurrence of each character a-z in trainingData.
+    	// i.e. [0] = a-count, [1] = b-count, ..., [25] = z-count.
+    	int[] letterCount = new int[26];
+    	int total = 0;
+
+    	// Loop over each string in trainingData and count the letters into [total]
+		for( int i = 0; i < trainingData.length; i++){
+    		for( int j = 0; j < trainingData[i].length(); j++){
+    			/* Convert letter to ASCII.
+    			 * This way we can allow only lowercase, plus
+    			 * with the right offset it can be its own array index! */
+    			int letter = (int) trainingData[i].charAt(j);
+    			
+    			if(letter >= 97 && letter <= 122){
+    				letterCount[letter-97]++;
+    				total++;
+    			}
+    		}
+    	}
+
+		// letterWeight: The probability of each letter occurring.
+		float[] letterWeight = new float[26];
+
+		for( int i = 0; i < letterWeight.length; i++){
+			letterWeight[i] = (float) letterCount[i] / total;
+		}
+		
+		/* Convert to CDF
+		 * According to the example, if A = .1, B = .2 and C = .7,
+		 * the CDF would be A = .1, B = .3 (A+B), and C = 1 (A+B+C).*/		
+		float previous = letterWeight[0];
+		for( int i = 1; i < 26; i++){
+			if(letterWeight[i] != 0){ //Ignore unused letters
+				letterWeight[i] += previous;
+				previous = letterWeight[i];
+			}
+		}
+
+		// 5. For each index, output[i] = (the first character whose CDF * base is > i)
+		char[] output = new char[base];
+		for( int i = 0; i < 26; i++){
+			float CDFbase = base*letterWeight[i];
+			if( CDFbase - Math.round(CDFbase) < 0.0001){CDFbase = Math.round(CDFbase);}
+			letterWeight[i] = (int)(CDFbase);
+		}
+		
+		// We need to compare each letter's weight * base with i.
+		// [base] is the number of entries in [output], and the
+		// first letter with a weight > i will be outputted.
+		for( int i = 0; i < base; i++){
+			for( int j = 0; j < 26; j++){
+				if(letterWeight[j] > i){
+					output[i] = (char)(j+97);
+					break;
+				}
+			}
+		}
+       return output;
     }
 }
